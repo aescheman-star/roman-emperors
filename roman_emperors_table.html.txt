@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Periodic Table of Roman Emperors</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --bg-alt: #020617;
+      --card: #020617;
+      --accent: #f97316;
+      --accent-soft: rgba(249,115,22,0.12);
+      --text: #e5e7eb;
+      --text-muted: #9ca3af;
+      --border: #1f2933;
+      --radius-lg: 18px;
+      --radius-sm: 10px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 24px;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #111827 0, #020617 45%, #000 100%);
+      color: var(--text);
+    }
+
+    h1, h2, h3 {
+      margin: 0;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+    }
+
+    h1 {
+      font-size: 1.8rem;
+    }
+
+    h2 {
+      font-size: 1.1rem;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    p {
+      margin: 0;
+    }
+
+    .page {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .page-header-main {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .page-header-subtitle {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+    }
+
+    .legend {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      font-size: 0.8rem;
+    }
+
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background-color: rgba(15,23,42,0.9);
+      border: 1px solid rgba(148,163,184,0.25);
+    }
+
+    .legend-swatch {
+      width: 14px;
+      height: 14px;
+      border-radius: 4px;
+    }
+
+    .dyn-julio { background: #22c55e; }
+    .dyn-flav { background: #06b6d4; }
+    .dyn-good { background: #a855f7; }
+    .dyn-severan { background: #f97316; }
+    .dyn-crisis { background: #ef4444; }
+    .dyn-tetrarchy { background: #eab308; }
+    .dyn-late { background: #38bdf8; }
+    .dyn-other { background: #9ca3af; }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 2.1fr) minmax(0, 1.3fr);
+      gap: 20px;
+      align-items: stretch;
+    }
+
+    @media (max-width: 880px) {
+      .layout {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .table-card,
+    .detail-card {
+      background: linear-gradient(150deg, rgba(15,23,42,0.96), rgba(5,20,40,0.98));
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(148,163,184,0.25);
+      box-shadow:
+        0 18px 40px rgba(15,23,42,0.9),
+        0 0 0 1px rgba(15,23,42,0.3);
+      padding: 16px 16px 18px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .table-card::before,
+    .detail-card::before {
+      content: "";
+      position: absolute;
+      inset: -120px;
+      background:
+        radial-gradient(circle at top right, rgba(249,115,22,0.09), transparent 55%),
+        radial-gradient(circle at bottom left, rgba(56,189,248,0.1), transparent 55%);
+      opacity: 0.8;
+      pointer-events: none;
+    }
+
+    .table-card-inner,
+    .detail-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    .table-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      gap: 8px;
+    }
+
+    .table-header-title {
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--text-muted);
+    }
+
+    .hint {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      opacity: 0.9;
+    }
+
+    .hint span {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .periodic-grid {
+      display: grid;
+      grid-template-columns: repeat(10, minmax(0, 1fr));
+      gap: 7px;
+      margin-top: 10px;
+    }
+
+    @media (max-width: 700px) {
+      .periodic-grid {
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+      }
+    }
+
+    .dyn-label {
+      grid-column: 1 / -1;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--text-muted);
+      margin-top: 10px;
+    }
+
+    .dyn-label:not(:first-child) {
+      margin-top: 18px;
+    }
+
+    .emperor-cell {
+      position: relative;
+      border-radius: var(--radius-sm);
+      background: radial-gradient(circle at top, rgba(15,23,42,0.9), rgba(15,23,42,0.96));
+      border: 1px solid rgba(31,41,55,0.85);
+      padding: 4px 4px 6px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 58px;
+      transition:
+        transform 0.12s ease-out,
+        box-shadow 0.12s ease-out,
+        border-color 0.12s ease-out,
+        background 0.12s ease-out;
+      font-size: 0.7rem;
+    }
+
+    .emperor-cell[data-dynasty="Julio-Claudian"] { box-shadow: 0 0 0 1px rgba(34,197,94,0.22); }
+    .emperor-cell[data-dynasty="Flavian"] { box-shadow: 0 0 0 1px rgba(6,182,212,0.22); }
+    .emperor-cell[data-dynasty="Five Good Emperors"] { box-shadow: 0 0 0 1px rgba(168,85,247,0.22); }
+    .emperor-cell[data-dynasty="Severan"] { box-shadow: 0 0 0 1px rgba(249,115,22,0.22); }
+    .emperor-cell[data-dynasty="Crisis of the Third Century"] { box-shadow: 0 0 0 1px rgba(239,68,68,0.26); }
+    .emperor-cell[data-dynasty="Tetrarchy & Constantine"] { box-shadow: 0 0 0 1px rgba(234,179,8,0.26); }
+    .emperor-cell[data-dynasty="Late Western Empire"] { box-shadow: 0 0 0 1px rgba(56,189,248,0.26); }
+
+    .emperor-cell:hover {
+      transform: translateY(-1px);
+      box-shadow:
+        0 10px 24px rgba(15,23,42,0.9),
+        0 0 0 1px rgba(248,250,252,0.2);
+      border-color: rgba(248,250,252,0.65);
+      background: radial-gradient(circle at top, rgba(15,23,42,1), rgba(15,23,42,0.98));
+    }
+
+    .emperor-cell:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .emperor-cell.active {
+      border-color: var(--accent);
+      box-shadow:
+        0 0 0 1px rgba(248,250,252,0.45),
+        0 0 0 3px rgba(249,115,22,0.4);
+      background: radial-gradient(circle at top, rgba(249,115,22,0.14), rgba(15,23,42,0.98));
+    }
+
+    .cell-symbol {
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .cell-name {
+      font-size: 0.75rem;
+      line-height: 1.2;
+      margin-top: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .cell-dates {
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .cell-tag {
+      position: absolute;
+      top: 3px;
+      right: 4px;
+      font-size: 0.55rem;
+      text-transform: uppercase;
+      padding: 1px 4px;
+      border-radius: 999px;
+      background: rgba(15,23,42,0.9);
+      border: 1px solid rgba(148,163,184,0.45);
+      color: var(--text-muted);
+    }
+
+    /* Detail panel */
+    .detail-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .detail-name {
+      font-size: 1.25rem;
+    }
+
+    .detail-dates {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .detail-dynasty-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.45);
+      background: rgba(15,23,42,0.95);
+      color: var(--text-muted);
+    }
+
+    .detail-dynasty-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+    }
+
+    .detail-body {
+      margin-top: 10px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.5fr);
+      gap: 10px;
+      font-size: 0.9rem;
+    }
+
+    .detail-notes {
+      line-height: 1.5;
+    }
+
+    .detail-meta {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      border-radius: 12px;
+      padding: 8px 10px;
+      background: radial-gradient(circle at top left, rgba(249,115,22,0.12), transparent 55%);
+      border: 1px solid rgba(148,163,184,0.3);
+      margin-top: 8px;
+    }
+
+    .detail-meta strong {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .detail-empty {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .detail-empty span {
+      color: var(--accent);
+    }
+
+    .footer-note {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+  <header class="page-header">
+    <div class="page-header-main">
+      <h1>Periodic Table of Roman Emperors</h1>
+      <p class="page-header-subtitle">
+        Click an emperor to view dynasty, reign, and a brief historical note.
+      </p>
+    </div>
+    <div class="legend" aria-label="Dynasty color legend">
+      <div class="legend-item">
+        <span class="legend-swatch dyn-julio"></span> Julio-Claudian
+      </div>
+      <div class="legend-item">
+        <span class="legend-swatch dyn-flav"></span> Flavian
+      </div>
+      <div class="legend-item">
+        <span class="legend-swatch dyn-good"></span> Five Good Emperors
+      </div>
+      <div class="legend-item">
+        <span class="legend-swatch dyn-severan"></span> Severan
+      </div>
+      <div class="legend-item">
+        <span class="legend-swatch dyn-crisis"></span> 3rd-Century Crisis
+      </div>
+      <div class="legend-item">
+        <span class="legend-swatch dyn-tetrarchy"></span> Tetrarchy & Constantine
+      </div>
+      <div class="legend-item">
+        <span class="legend-swatch dyn-late"></span> Late Western
+      </div>
+    </div>
+  </header>
+
+  <section class="layout">
+    <!-- Left: “periodic table” -->
+    <section class="table-card" aria-label="Interactive table of emperors">
+      <div class="table-card-inner">
+        <div class="table-header">
+          <div class="table-header-title">Emperor grid</div>
+          <div class="hint"><span>Tip:</span> Click a cell to view details →</div>
+        </div>
+
+        <div class="periodic-grid" id="emperor-grid">
+          <!-- Julio-Claudian -->
+          <div class="dyn-label">Julio-Claudian Dynasty (27 BCE – 68 CE)</div>
+          <button class="emperor-cell"
+                  data-symbol="AU"
+                  data-name="Augustus"
+                  data-dates="27 BCE – 14 CE"
+                  data-dynasty="Julio-Claudian"
+                  data-note="First Roman emperor. Established the Principate and began the Pax Romana, stabilizing Rome after civil wars.">
+            <div class="cell-tag">PRIN</div>
+            <div class="cell-symbol">AU</div>
+            <div class="cell-name">Augustus</div>
+            <div class="cell-dates">27 BCE–14 CE</div>
+          </button>
+
+          <button class="emperor-cell"
+                  data-symbol="TI"
+                  data-name="Tiberius"
+                  data-dates="14 – 37"
+                  data-dynasty="Julio-Claudian"
+                  data-note="Capable general and administrator, but increasingly withdrawn and suspicious; his rule saw growing influence of the Praetorian Guard.">
+            <div class="cell-symbol">TI</div>
+            <div class="cell-name">Tiberius</div>
+            <div class="cell-dates">14–37</div>
+          </button>
+
+          <button class="emperor-cell"
+                  data-symbol="CA"
+                  data-name="Caligula"
+                  data-dates="37 – 41"
+                  data-dynasty="Julio-Claudian"
+                  data-note="Known for extravagance and brutality. His erratic behavior and clashes with the Senate led to his assassination.">
+            <div class="cell-symbol">CA</div>
+            <div class="cell-name">Caligula</div>
+            <div class="cell-dates">37–41</div>
+          </button>
+
+          <button class="emperor-cell"
+                  data-symbol="CL"
+                  data-name="Claudius"
+                  data-dates="41 – 54"
+                  data-dynasty="Julio-Claudian"
+                  data-note="Scholar-emperor who expanded Rome (notably by conquering Britain) and reformed administration, despite physical disabilities and political intrigue.">
+            <div class="cell-symbol">CL</div>
+            <div class="cell-name">Claudius</div>
+            <div class="cell-dates">41–54</div>
+          </button>
+
+          <button class="emperor-cell"
+                  data-symbol="NE"
+                  data-name="Nero"
+                  data-dates="54 – 68"
+                  data-dynasty="Julio-Claudian"
+                  data-note="Patron of the arts, yet infamous for persecution of Christians and mismanagement. His death ended the Julio-Claudian line.">
+            <div class="cell-symbol">NE</div>
+            <div class="cell-name">Nero</div>
+            <div class="cell-dates">54–68</div>
+          </button>
+
+          <!-- Year of the Four Emperors / Flavian -->
+          <div class="dyn-label">Year of the Four Emperors & Flavian Dynasty (68 – 96)</div>
+
+          <button class="emperor-cell"
+                  data-symbol="GA"
+                  data-name="Galba"
+                  data-dates="68 – 69"
+                  data-dynasty="Other"
+                  data-note="Seized power after Nero; his harsh financial measures alienated soldiers and elites, leading to his assassination.">
+            <div class="cell-symbol">GA</div>
+            <div class="cell-name">Galba</div>
+            <div class="cell-dates">68–69</div>
+          </button>
+
+          <button class="emperor-cell"
+                  data-symbol="OT"
+                  data-name="Otho"
+                  data-dates="69"
+                  data-dynasty="Other"
+                  data-note="Briefly emperor during civil war; after defeat by Vitellius he committed suicide, seeking to spare Rome further bloodshed.">
+            <div class="cell-symbol">OT</div>
+            <div class="cell-name">Otho</div>
+            <div class="cell-dates">69</div>
+          </button>
+
+          <button class="emperor-cell"
+                  data-symbol="VI"
+                  data-name="Vitellius"
+                  data-dates="69"
+                  data-dynasty="Other"
+                  data-note="Rose with support of German legions; deposed by Vespasian’s forces, marking the end of the chaotic Year of the Four Emperors.">
+            <div class="cell-symbol">VI</div>
+            <div class="cell-name">Vitellius</div>
+            <div class="cell-dates">69</div>
+          </button>
+
+          <button class="emperor-cell"
+                  data-symbol="VE"
+                  data-name="Vespasian"
+                  data-dates="69 – 79"
+                  data-dynasty="Flavian"
+                  data-note="Founded the Flavian dynasty, restored stability, and began construction of the Colosseum with spoils from the Jewish War.">
+            <div class="cell-tag">FLAV</div>
+            <div class="cell-symbol">VE</div>
+            <div class="cell-name">Vespasian</div>
+            <div class="cell-dates">69–79</div>
+          </button>
+
+          <button class="emperor-cell"
+                  data-symbol="TI2"
+                  data-name="Titus"
+                  data-dates="79 – 81"
+                  data-dynasty="Flavian"
+                  data-note="Oversaw the completion of the Colosseum; his brief reign was marked by responses to disasters such as Vesuvius and a great fire.">
+            <div class="cell-symbol">TI2</div>
+            <div class="cell-name">Titus</div>
+            <div class="cell-dates">79–81</div>
+          </button>
+
+          <button class="emperor-cell"
+                  data-symbol="DO"
+                  data-name="Domitian"
+                  data-dates="81 – 96"
+                  data-dynasty="Flavian"
+                  data-note="Authoritarian ruler who strengthened imperial power but antagonized the Senate; assassinated in a palace plot.">
+            <div class="cell-symbol">DO</div>
+            <div class="cell-name">Domitian</div>
+            <div class="cell-dates">81–96</div>
+          </button>
+
+          <!-- Five Good Emperors -->
+          <div class="dyn-label">Five Good Emperors (96 – 180)</div>
+
+          <button class="emperor-cell"
+                  data-symbol="NR"
+                  data-name="Nerva"
+                  data-dates="96 – 98"
+                  data-dynasty="Five Good Emperors"
+                  data-note="Elder statesman who stabilized succession by adopting Trajan, inaugurating the era of adoptive emperors.">
+            <div class="cell-tag">GOOD</div>
+            <div class="cell-symbol">NR</div>
+            <div class="cell-name">Nerva</div>
+            <div class="cell-dates">96–98</div>
+          </button>
+
+          <button class="emperor-cell"
+                  data-symbol="TR"
+                  data-name="Trajan"
+                  data-dates="98 – 117"
+                  data-dynasty="Five Good Emperors"
+                  data-note="Military emperor who expanded Rome to its greatest territorial extent; remembered for major building projects like Trajan’s Forum.">
+            <div class="cell-symbol">TR</div>
+            <div class="cell-name">Trajan</div>
+            <div class="cell-dates">98–117</div>
+          </button>
+
+          <button class="emperor-cell"
+                  data-symbol="HA"
+                  data-name="Hadrian"
+                  data-dates="117 – 138"
+                  data-dynasty="Five Good Emperors"
+                  data-note="Shifted from expansion to consolidation, fortifying frontiers (e.g., Hadrian’s Wall in Britain) and promoting Greco-Roman culture.">
+            <div class="cell-symbol">HA</div>
+            <div class="cell-name">Hadrian</div>
+            <div class="cell-dates">117–138</div>
+          </button>
+
+          <button class="emperor-cell"
+                  data-symbol="AN"
+                  data-name="Antoninus Pius"
+                  data-dates="138 – 161"
+                  data-dynasty="Five Good Emperors"
+                  data-note="Presided over a long, peaceful, and prosperous reign; noted for legal reforms and humane administration.">
+            <div class="cell-symbol">AN</div>
+            <div class="cell-name">Antoninus Pius</div>
+            <div class="cell-dates">138–161</div>
+          </button>
+
+          <button class="emperor-cell"
+                  data-symbol="MA"
+                  data-name="Marcus Aurelius"
+                  data-dates="161 – 180"
+                  data-dynasty="Five Good Emperors"
+                  data-note="Philosopher-emperor and Stoic author of the Meditations; fought major frontier wars while wrestling with plague and internal strain.">
+            <div class="cell-symbol">MA</div>
+            <div class="cell-name">Marcus Aurelius</div>
+            <div class="cell-dates">161–180</div>
+          </button>
+
+          <!-- Severan -->
+          <div class="dyn-label">Severan Dynasty (193 – 235)</div>
+
+          <button class="emperor-cell"
+                  data-symbol="SP"
+                  data-name="Septimius Severus"
+                  data-dates="193 – 211"
+                  data-dynasty="Severan"
+                  data-note="Rose from Africa through the army; strengthened the military’s role and left a powerful but costly imperial structure.">
+            <div class="cell-tag">SEV</div>
+            <div class="cell-symbol">SP</div>
+            <div class="cell-name">Septimius Severus</div>
+            <div class="cell-dates">193–211</div>
+          </button>
+
+          <button class="emperor-cell"
+                  data-symbol="CA2"
+                  data-name="Caracalla"
+                  data-dates="198 – 217"
+                  data-dynasty="Severan"
+                  data-note="Notorious for brutality, yet issued the Edict of Caracalla granting Roman citizenship to most free inhabitants of the empire.">
+            <div class="cell-symbol">CA2</div>
+            <div class="cell-name">Caracalla</div>
+            <div class="cell-dates">198–217</div>
+          </button>
+
+          <button class="emperor-cell"
+                  data-symbol="EL"
+                  data-name="Elagabalus"
+                  data-dates="218 – 222"
+                  data-dynasty="Severan"
+                  data-note="Teenage emperor whose religious reforms and court extravagance shocked elites; killed by the Praetorian Guard.">
+            <div class="cell-symbol">EL</div>
+            <div class="cell-name">Elagabalus</div>
+            <div class="cell-dates">218–222</div>
+          </button>
+
+          <button class="emperor-cell"
+                  data-symbol="SE2"
+                  data-name="Severus Alexander"
+                  data-dates="222 – 235"
+                  data-dynasty="Severan"
+                  data-note="Attempted to govern with advice from his mother and the Senate; his death at the hands of soldiers opened the 3rd-century crisis.">
+            <div class="cell-symbol">SE2</div>
+            <div class="cell-name">Severus Alexander</div>
+            <div class="cell-dates">222–235</div>
+          </button>
+
+          <!-- Crisis of the Third Century -->
+          <div class="dyn-label">Crisis of the Third Century (235 – 284)</div>
+
+          <button class="emperor-cell"
+                  data-symbol="MA2"
+                  data-name="Maximinus Thrax"
+                  data-dates="235 – 238"
+                  data-dynasty="Crisis of the Third Century"
+                  data-note="Soldier-emperor of humble origins; his rise symbolizes the dominance of the army and the weakening of senatorial influence.">
+            <div class="cell-tag">CRIS</div>
+            <div class="cell-symbol">MA2</div>
+            <div class="cell-name">Maximinus Thrax</div>
+            <div class="cell-dates">235–238</div>
+          </button>
+
+          <button class="emperor-cell"
+                  data-symbol="GO"
+                  data-name="Gordian III"
+                  data-dates="238 – 244"
+                  data-dynasty="Crisis of the Third Century"
+                  data-note="Came to the throne as a teenager; his reign was dominated by advisers and military campaigns in the East.">
+            <div class="cell-symbol">GO</div>
+            <div class="cell-name">Gordian III</div>
+            <div class="cell-dates">238–244</div>
+          </button>
+
+          <button class="emperor-cell"
+                  data-symbol="PH"
+                  data-name="Philip the Arab"
+                  data-dates="244 – 249"
+                  data-dynasty="Crisis of the Third Century"
+                  data-note="Possibly presided over Rome’s 1000th anniversary; faced rebellions and external threats that eroded his position.">
+            <div class="cell-symbol">PH</div>
+            <div class="cell-name">Philip the Arab</div>
+            <div class="cell-dates">244–249</div>
+          </button>
+
+          <button class="emperor-cell"
+                  data-symbol="DE"
+                  data-name="Decius"
+                  data-dates="249 – 251"
+                  data-dynasty="Crisis of the Third Century"
+                  data-note="Known for empire-wide persecution of Christians and for dying in battle against the Goths.">
+            <div class="cell-symbol">DE</div>
+            <div class="cell-name">Decius</div>
+            <div class="cell-dates">249–251</div>
+          </button>
+
+          <button class="emperor-cell"
+                  data-symbol="VA"
+                  data-name="Valerian"
+                  data-dates="253 – 260"
+                  data-dynasty="Crisis of the Third Century"
+                  data-note="Captured alive by the Persian king Shapur I, a humiliating blow that symbolized imperial vulnerability.">
+            <div class="cell-symbol">VA</div>
+            <div class="cell-name">Valerian</div>
+            <div class="cell-dates">253–260</div>
+          </button>
+
+          <button class="emperor-cell"
+                  data-symbol="GA2"
+                  data-name="Gallienus"
+                  data-dates="253 – 268"
+                  data-dynasty="Crisis of the Third Century"
+                  data-note="Co-ruled with his father Valerian and then alone; fought multiple usurpers while trying to reform the army.">
+            <div class="cell-symbol">GA2</div>
+            <div class="cell-name">Gallienus</div>
+            <div class="cell-dates">253–268</div>
+          </button>
+
+          <button class="emperor-cell"
+                  data-symbol="CL2"
+                  data-name="Claudius Gothicus"
+                  data-dates="268 – 270"
+                  data-dynasty="Crisis of the Third Century"
+                  data-note="Won a major victory over the Goths at Naissus, helping to restore confidence in the imperial army.">
+            <div class="cell-symbol">CL2</div>
+            <div class="cell-name">Claudius Gothicus</div>
+            <div class="cell-dates">268–270</div>
+          </button>
+
+          <button class="emperor-cell"
+                  data-symbol="AU2"
+                  data-name="Aurelian"
+                  data-dates="270 – 275"
+                  data-dynasty="Crisis of the Third Century"
+                  data-note="‘Restitutor Orbis’ (Restorer of the World). Reunited the fractured empire and built the Aurelian Walls around Rome.">
+            <div class="cell-symbol">AU2</div>
+            <div class="cell-name">Aurelian</div>
+            <div class="cell-dates">270–275</div>
+          </button>
+
+          <button class="emperor-cell"
+                  data-symbol="PR"
+                  data-name="Probus"
+                  data-dates="276 – 282"
+                  data-dynasty="Crisis of the Third Century"
+                  data-note="Skilled general who secured frontiers and promoted agricultural restoration; killed in a mutiny.">
+            <div class="cell-symbol">PR</div>
+            <div class="cell-name">Probus</div>
+            <div class="cell-dates">276–282</div>
+          </button>
+
+          <!-- Tetrarchy & Constantine -->
+          <div class="dyn-label">Tetrarchy & Constantinian Dynasty (284 – 363)</div>
+
+          <button class="emperor-cell"
+                  data-symbol="DI"
+                  data-name="Diocletian"
+                  data-dates="284 – 305"
+                  data-dynasty="Tetrarchy & Constantine"
+                  data-note="Reorganized the empire into the Tetrarchy, separating civil and military authority and attempting to stabilize succession and administration.">
+            <div class="cell-tag">TETR</div>
+            <div class="cell-symbol">DI</div>
+            <div class="cell-name">Diocletian</div>
+            <div class="cell-dates">284–305</div>
+          </button>
+
+          <button class="emperor-cell"
+                  data-symbol="MA3"
+                  data-name="Maximian"
+                  data-dates="286 – 305"
+                  data-dynasty="Tetrarchy & Constantine"
+                  data-note="Co-emperor with Diocletian in the West; shared military burdens and governance during the early Tetrarchy.">
+            <div class="cell-symbol">MA3</div>
+            <div class="cell-name">Maximian</div>
+            <div class="cell-dates">286–305</div>
+          </button>
+
+          <button class="emperor-cell"
+                  data-symbol="CO"
+                  data-name="Constantine the Great"
+                  data-dates="306 – 337"
+                  data-dynasty="Tetrarchy & Constantine"
+                  data-note="Legalized Christianity (Edict of Milan), refounded Byzantium as Constantinople, and reshaped the imperial religious landscape.">
+            <div class="cell-symbol">CO</div>
+            <div class="cell-name">Constantine the Great</div>
+            <div class="cell-dates">306–337</div>
+          </button>
+
+          <button class="emperor-cell"
+                  data-symbol="CO2"
+                  data-name="Constantius II"
+                  data-dates="337 – 361"
+                  data-dynasty="Tetrarchy & Constantine"
+                  data-note="Son of Constantine; ruled much of the empire while contending with religious controversies and frontier pressures.">
+            <div class="cell-symbol">CO2</div>
+            <div class="cell-name">Constantius II</div>
+            <div class="cell-dates">337–361</div>
+          </button>
+
+          <button class="emperor-cell"
+                  data-symbol="JU"
+                  data-name="Julian the Apostate"
+                  data-dates="361 – 363"
+                  data-dynasty="Tetrarchy & Constantine"
+                  data-note="Tried to restore traditional pagan worship while promoting philosophy and administrative reform; died on campaign in Persia.">
+            <div class="cell-symbol">JU</div>
+            <div class="cell-name">Julian</div>
+            <div class="cell-dates">361–363</div>
+          </button>
+
+          <!-- Late Western Empire -->
+          <div class="dyn-label">Valentinian, Theodosian & Late Western Emperors (364 – 476)</div>
+
+          <button class="emperor-cell"
+                  data-symbol="VA2"
+                  data-name="Valentinian I"
+                  data-dates="364 – 375"
+                  data-dynasty="Late Western Empire"
+                  data-note="Energetic military ruler who defended the Rhine and Danube frontiers and shared rule with his brother Valens in the East.">
+            <div class="cell-tag">LATE</div>
+            <div class="cell-symbol">VA2</div>
+            <div class="cell-name">Valentinian I</div>
+            <div class="cell-dates">364–375</div>
+          </button>
+
+          <button class="emperor-cell"
+                  data-symbol="VA3"
+                  data-name="Valens"
+                  data-dates="364 – 378"
+                  data-dynasty="Late Western Empire"
+                  data-note="Eastern emperor who died at the Battle of Adrianople against the Goths, a major military disaster.">
+            <div class="cell-symbol">VA3</div>
+            <div class="cell-name">Valens</div>
+            <div class="cell-dates">364–378</div>
+          </button>
+
+          <button class="emperor-cell"
+                  data-symbol="TH"
+                  data-name="Theodosius I"
+                  data-dates="379 – 395"
+                  data-dynasty="Late Western Empire"
+                  data-note="Made Nicene Christianity the official state religion and was the last emperor to rule both East and West jointly.">
+            <div class="cell-symbol">TH</div>
+            <div class="cell-name">Theodosius I</div>
+            <div class="cell-dates">379–395</div>
+          </button>
+
+          <button class="emperor-cell"
+                  data-symbol="HO"
+                  data-name="Honorius"
+                  data-dates="395 – 423"
+                  data-dynasty="Late Western Empire"
+                  data-note="Western emperor during the sack of Rome in 410; his reign saw accelerating fragmentation of imperial authority in the West.">
+            <div class="cell-symbol">HO</div>
+            <div class="cell-name">Honorius</div>
+            <div class="cell-dates">395–423</div>
+          </button>
+
+          <button class="emperor-cell"
+                  data-symbol="MA4"
+                  data-name="Majorian"
+                  data-dates="457 – 461"
+                  data-dynasty="Late Western Empire"
+                  data-note="Capable reformer and general who tried to rebuild Western power but was deposed by the powerful general Ricimer.">
+            <div class="cell-symbol">MA4</div>
+            <div class="cell-name">Majorian</div>
+            <div class="cell-dates">457–461</div>
+          </button>
+
+          <button class="emperor-cell"
+                  data-symbol="RO"
+                  data-name="Romulus Augustulus"
+                  data-dates="475 – 476"
+                  data-dynasty="Late Western Empire"
+                  data-note="Deposed by the Germanic leader Odoacer in 476; traditionally regarded as the last Western Roman emperor.">
+            <div class="cell-symbol">RO</div>
+            <div class="cell-name">Romulus Augustulus</div>
+            <div class="cell-dates">475–476</div>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Right: detail panel -->
+    <aside class="detail-card" aria-label="Emperor detail panel">
+      <div class="detail-inner" id="detail-inner">
+        <div class="detail-empty" id="detail-empty">
+          <h2>Emperor details</h2>
+          <p>
+            Select an emperor from the grid on the left to view:
+          </p>
+          <ul>
+            <li>Full name and dates of reign</li>
+            <li>Dynasty / historical period</li>
+            <li>A concise contextual note</li>
+          </ul>
+          <p>
+            <span>Classroom idea:</span> ask students to compare notes across dynasties (e.g., Julio-Claudian vs. Five Good Emperors) or identify patterns in crises and reforms.
+          </p>
+        </div>
+      </div>
+    </aside>
+  </section>
+
+  <footer class="footer-note">
+    This is a simplified overview, focused on selected emperors for clarity. You can extend the grid by copying a cell and adjusting its data- attributes.
+  </footer>
+</div>
+
+<script>
+  (function () {
+    const grid = document.getElementById("emperor-grid");
+    const detailInner = document.getElementById("detail-inner");
+    const emptyState = document.getElementById("detail-empty");
+
+    const dynastyColors = {
+      "Julio-Claudian": "dyn-julio",
+      "Flavian": "dyn-flav",
+      "Five Good Emperors": "dyn-good",
+      "Severan": "dyn-severan",
+      "Crisis of the Third Century": "dyn-crisis",
+      "Tetrarchy & Constantine": "dyn-tetrarchy",
+      "Late Western Empire": "dyn-late",
+      "Other": "dyn-other"
+    };
+
+    function clearActive() {
+      const active = grid.querySelector(".emperor-cell.active");
+      if (active) active.classList.remove("active");
+    }
+
+    function renderDetail(cell) {
+      const name = cell.dataset.name;
+      const dates = cell.dataset.dates;
+      const dynasty = cell.dataset.dynasty;
+      const note = cell.dataset.note;
+
+      const dynClass = dynastyColors[dynasty] || "dyn-other";
+
+      detailInner.innerHTML = `
+        <div class="detail-header">
+          <div>
+            <div class="detail-name">${name}</div>
+            <div class="detail-dates">${dates}</div>
+          </div>
+          <div class="detail-dynasty-pill">
+            <span class="detail-dynasty-dot ${dynClass}"></span>
+            <span>${dynasty}</span>
+          </div>
+        </div>
+        <div class="detail-body">
+          <div class="detail-notes">
+            ${note}
+          </div>
+        </div>
+        <div class="detail-meta">
+          <strong>Hint for students:</strong> How does this emperor’s rule reflect broader patterns in Roman history—
+          such as expansion, crisis, or reform? Compare with another emperor from a different dynasty.
+        </div>
+      `;
+    }
+
+    function handleClick(event) {
+      const cell = event.target.closest(".emperor-cell");
+      if (!cell) return;
+
+      clearActive();
+      cell.classList.add("active");
+      emptyState && emptyState.remove();
+      renderDetail(cell);
+    }
+
+    grid.addEventListener("click", handleClick);
+  })();
+</script>
+</body>
+</html>
