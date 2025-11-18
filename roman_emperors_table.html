@@ -221,8 +221,7 @@
         border-color 0.12s ease-out,
         background 0.12s ease-out;
       font-size: 0.7rem;
-
-      color: white;
+      color: #ffffff; /* make tile text white */
     }
 
     .emperor-cell[data-dynasty="Julio-Claudian"] { box-shadow: 0 0 0 1px rgba(34,197,94,0.22); }
@@ -273,8 +272,9 @@
 
     .cell-dates {
       font-size: 0.65rem;
-      color: var(--text-muted);
+      color: #f9fafb;
       margin-top: 2px;
+      opacity: 0.9;
     }
 
     .cell-tag {
@@ -286,11 +286,32 @@
       padding: 1px 4px;
       border-radius: 999px;
       background: rgba(15,23,42,0.9);
-      border: 1px solid rgba(148,163,184,0.45);
-      color: var(--text-muted);
+      border: 1px solid rgba(248,250,252,0.45);
+      color: #f9fafb;
     }
 
     /* Detail panel */
+    .detail-header-top {
+      margin-bottom: 8px;
+    }
+
+    .detail-image-wrapper {
+      width: 100%;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid rgba(148,163,184,0.4);
+      background: radial-gradient(circle at top, rgba(15,23,42,0.9), rgba(15,23,42,1));
+      margin-bottom: 10px;
+      max-height: 220px;
+    }
+
+    .detail-image-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
     .detail-header {
       display: flex;
       justify-content: space-between;
@@ -336,6 +357,27 @@
       font-size: 0.9rem;
     }
 
+    .detail-section {
+      margin-bottom: 8px;
+    }
+
+    .detail-section-title {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-muted);
+      margin-bottom: 2px;
+    }
+
+    .detail-section-list {
+      margin-top: 2px;
+      padding-left: 16px;
+    }
+
+    .detail-section-list li {
+      margin-bottom: 2px;
+    }
+
     .detail-notes {
       line-height: 1.5;
     }
@@ -378,7 +420,7 @@
     <div class="page-header-main">
       <h1>Periodic Table of Roman Emperors</h1>
       <p class="page-header-subtitle">
-        Click an emperor to view dynasty, reign, and a brief historical note.
+        Click an emperor to view a brief biography, personality notes, major accomplishments, and overall historical legacy.
       </p>
     </div>
     <div class="legend" aria-label="Dynasty color legend">
@@ -411,19 +453,20 @@
     <section class="table-card" aria-label="Interactive table of emperors">
       <div class="table-card-inner">
         <div class="table-header">
-          <div class="table-header-title">Emperors</div>
+          <div class="table-header-title">Emperor grid</div>
           <div class="hint"><span>Tip:</span> Click a cell to view details →</div>
         </div>
 
         <div class="periodic-grid" id="emperor-grid">
           <!-- Julio-Claudian -->
           <div class="dyn-label">Julio-Claudian Dynasty (27 BCE – 68 CE)</div>
+
           <button class="emperor-cell"
+                  data-id="augustus"
                   data-symbol="AU"
                   data-name="Augustus"
                   data-dates="27 BCE – 14 CE"
-                  data-dynasty="Julio-Claudian"
-                  data-note="First Roman emperor. Established the Principate and began the Pax Romana, stabilizing Rome after civil wars.">
+                  data-dynasty="Julio-Claudian">
             <div class="cell-tag">PRIN</div>
             <div class="cell-symbol">AU</div>
             <div class="cell-name">Augustus</div>
@@ -431,44 +474,44 @@
           </button>
 
           <button class="emperor-cell"
+                  data-id="tiberius"
                   data-symbol="TI"
                   data-name="Tiberius"
                   data-dates="14 – 37"
-                  data-dynasty="Julio-Claudian"
-                  data-note="Capable general and administrator, but increasingly withdrawn and suspicious; his rule saw growing influence of the Praetorian Guard.">
+                  data-dynasty="Julio-Claudian">
             <div class="cell-symbol">TI</div>
             <div class="cell-name">Tiberius</div>
             <div class="cell-dates">14–37</div>
           </button>
 
           <button class="emperor-cell"
+                  data-id="caligula"
                   data-symbol="CA"
                   data-name="Caligula"
                   data-dates="37 – 41"
-                  data-dynasty="Julio-Claudian"
-                  data-note="Known for extravagance and brutality. His erratic behavior and clashes with the Senate led to his assassination.">
+                  data-dynasty="Julio-Claudian">
             <div class="cell-symbol">CA</div>
             <div class="cell-name">Caligula</div>
             <div class="cell-dates">37–41</div>
           </button>
 
           <button class="emperor-cell"
+                  data-id="claudius"
                   data-symbol="CL"
                   data-name="Claudius"
                   data-dates="41 – 54"
-                  data-dynasty="Julio-Claudian"
-                  data-note="Scholar-emperor who expanded Rome (notably by conquering Britain) and reformed administration, despite physical disabilities and political intrigue.">
+                  data-dynasty="Julio-Claudian">
             <div class="cell-symbol">CL</div>
             <div class="cell-name">Claudius</div>
             <div class="cell-dates">41–54</div>
           </button>
 
           <button class="emperor-cell"
+                  data-id="nero"
                   data-symbol="NE"
                   data-name="Nero"
                   data-dates="54 – 68"
-                  data-dynasty="Julio-Claudian"
-                  data-note="Patron of the arts, yet infamous for persecution of Christians and mismanagement. His death ended the Julio-Claudian line.">
+                  data-dynasty="Julio-Claudian">
             <div class="cell-symbol">NE</div>
             <div class="cell-name">Nero</div>
             <div class="cell-dates">54–68</div>
@@ -478,44 +521,44 @@
           <div class="dyn-label">Year of the Four Emperors & Flavian Dynasty (68 CE – 96 CE)</div>
 
           <button class="emperor-cell"
+                  data-id="galba"
                   data-symbol="GA"
                   data-name="Galba"
                   data-dates="68 – 69"
-                  data-dynasty="Other"
-                  data-note="Seized power after Nero; his harsh financial measures alienated soldiers and elites, leading to his assassination.">
+                  data-dynasty="Other">
             <div class="cell-symbol">GA</div>
             <div class="cell-name">Galba</div>
             <div class="cell-dates">68–69</div>
           </button>
 
           <button class="emperor-cell"
+                  data-id="otho"
                   data-symbol="OT"
                   data-name="Otho"
                   data-dates="69"
-                  data-dynasty="Other"
-                  data-note="Briefly emperor during civil war; after defeat by Vitellius he committed suicide, seeking to spare Rome further bloodshed.">
+                  data-dynasty="Other">
             <div class="cell-symbol">OT</div>
             <div class="cell-name">Otho</div>
             <div class="cell-dates">69</div>
           </button>
 
           <button class="emperor-cell"
+                  data-id="vitellius"
                   data-symbol="VI"
                   data-name="Vitellius"
                   data-dates="69"
-                  data-dynasty="Other"
-                  data-note="Rose with support of German legions; deposed by Vespasian’s forces, marking the end of the chaotic Year of the Four Emperors.">
+                  data-dynasty="Other">
             <div class="cell-symbol">VI</div>
             <div class="cell-name">Vitellius</div>
             <div class="cell-dates">69</div>
           </button>
 
           <button class="emperor-cell"
+                  data-id="vespasian"
                   data-symbol="VE"
                   data-name="Vespasian"
                   data-dates="69 – 79"
-                  data-dynasty="Flavian"
-                  data-note="Founded the Flavian dynasty, restored stability, and began construction of the Colosseum with spoils from the Jewish War.">
+                  data-dynasty="Flavian">
             <div class="cell-tag">FLAV</div>
             <div class="cell-symbol">VE</div>
             <div class="cell-name">Vespasian</div>
@@ -523,22 +566,22 @@
           </button>
 
           <button class="emperor-cell"
+                  data-id="titus"
                   data-symbol="TI2"
                   data-name="Titus"
                   data-dates="79 – 81"
-                  data-dynasty="Flavian"
-                  data-note="Oversaw the completion of the Colosseum; his brief reign was marked by responses to disasters such as Vesuvius and a great fire.">
+                  data-dynasty="Flavian">
             <div class="cell-symbol">TI2</div>
             <div class="cell-name">Titus</div>
             <div class="cell-dates">79–81</div>
           </button>
 
           <button class="emperor-cell"
+                  data-id="domitian"
                   data-symbol="DO"
                   data-name="Domitian"
                   data-dates="81 – 96"
-                  data-dynasty="Flavian"
-                  data-note="Authoritarian ruler who strengthened imperial power but antagonized the Senate; assassinated in a palace plot.">
+                  data-dynasty="Flavian">
             <div class="cell-symbol">DO</div>
             <div class="cell-name">Domitian</div>
             <div class="cell-dates">81–96</div>
@@ -548,11 +591,11 @@
           <div class="dyn-label">Five Good Emperors (96 CE – 180 CE)</div>
 
           <button class="emperor-cell"
+                  data-id="nerva"
                   data-symbol="NR"
                   data-name="Nerva"
                   data-dates="96 – 98"
-                  data-dynasty="Five Good Emperors"
-                  data-note="Elder statesman who stabilized succession by adopting Trajan, inaugurating the era of adoptive emperors.">
+                  data-dynasty="Five Good Emperors">
             <div class="cell-tag">GOOD</div>
             <div class="cell-symbol">NR</div>
             <div class="cell-name">Nerva</div>
@@ -560,44 +603,44 @@
           </button>
 
           <button class="emperor-cell"
+                  data-id="trajan"
                   data-symbol="TR"
                   data-name="Trajan"
                   data-dates="98 – 117"
-                  data-dynasty="Five Good Emperors"
-                  data-note="Military emperor who expanded Rome to its greatest territorial extent; remembered for major building projects like Trajan’s Forum.">
+                  data-dynasty="Five Good Emperors">
             <div class="cell-symbol">TR</div>
             <div class="cell-name">Trajan</div>
             <div class="cell-dates">98–117</div>
           </button>
 
           <button class="emperor-cell"
+                  data-id="hadrian"
                   data-symbol="HA"
                   data-name="Hadrian"
                   data-dates="117 – 138"
-                  data-dynasty="Five Good Emperors"
-                  data-note="Shifted from expansion to consolidation, fortifying frontiers (e.g., Hadrian’s Wall in Britain) and promoting Greco-Roman culture.">
+                  data-dynasty="Five Good Emperors">
             <div class="cell-symbol">HA</div>
             <div class="cell-name">Hadrian</div>
             <div class="cell-dates">117–138</div>
           </button>
 
           <button class="emperor-cell"
+                  data-id="antoninus_pius"
                   data-symbol="AN"
                   data-name="Antoninus Pius"
                   data-dates="138 – 161"
-                  data-dynasty="Five Good Emperors"
-                  data-note="Presided over a long, peaceful, and prosperous reign; noted for legal reforms and humane administration.">
+                  data-dynasty="Five Good Emperors">
             <div class="cell-symbol">AN</div>
             <div class="cell-name">Antoninus Pius</div>
             <div class="cell-dates">138–161</div>
           </button>
 
           <button class="emperor-cell"
+                  data-id="marcus_aurelius"
                   data-symbol="MA"
                   data-name="Marcus Aurelius"
                   data-dates="161 – 180"
-                  data-dynasty="Five Good Emperors"
-                  data-note="Philosopher-emperor and Stoic author of the Meditations; fought major frontier wars while wrestling with plague and internal strain.">
+                  data-dynasty="Five Good Emperors">
             <div class="cell-symbol">MA</div>
             <div class="cell-name">Marcus Aurelius</div>
             <div class="cell-dates">161–180</div>
@@ -607,11 +650,11 @@
           <div class="dyn-label">Severan Dynasty (193 CE – 235 CE)</div>
 
           <button class="emperor-cell"
+                  data-id="septimius_severus"
                   data-symbol="SP"
                   data-name="Septimius Severus"
                   data-dates="193 – 211"
-                  data-dynasty="Severan"
-                  data-note="Rose from Africa through the army; strengthened the military’s role and left a powerful but costly imperial structure.">
+                  data-dynasty="Severan">
             <div class="cell-tag">SEV</div>
             <div class="cell-symbol">SP</div>
             <div class="cell-name">Septimius Severus</div>
@@ -619,33 +662,33 @@
           </button>
 
           <button class="emperor-cell"
+                  data-id="caracalla"
                   data-symbol="CA2"
                   data-name="Caracalla"
                   data-dates="198 – 217"
-                  data-dynasty="Severan"
-                  data-note="Notorious for brutality, yet issued the Edict of Caracalla granting Roman citizenship to most free inhabitants of the empire.">
+                  data-dynasty="Severan">
             <div class="cell-symbol">CA2</div>
             <div class="cell-name">Caracalla</div>
             <div class="cell-dates">198–217</div>
           </button>
 
           <button class="emperor-cell"
+                  data-id="elagabalus"
                   data-symbol="EL"
                   data-name="Elagabalus"
                   data-dates="218 – 222"
-                  data-dynasty="Severan"
-                  data-note="Teenage emperor whose religious reforms and court extravagance shocked elites; killed by the Praetorian Guard.">
+                  data-dynasty="Severan">
             <div class="cell-symbol">EL</div>
             <div class="cell-name">Elagabalus</div>
             <div class="cell-dates">218–222</div>
           </button>
 
           <button class="emperor-cell"
+                  data-id="severus_alexander"
                   data-symbol="SE2"
                   data-name="Severus Alexander"
                   data-dates="222 – 235"
-                  data-dynasty="Severan"
-                  data-note="Attempted to govern with advice from his mother and the Senate; his death at the hands of soldiers opened the 3rd-century crisis.">
+                  data-dynasty="Severan">
             <div class="cell-symbol">SE2</div>
             <div class="cell-name">Severus Alexander</div>
             <div class="cell-dates">222–235</div>
@@ -655,11 +698,11 @@
           <div class="dyn-label">Crisis of the Third Century (235 CE – 284 CE)</div>
 
           <button class="emperor-cell"
+                  data-id="maximinus_thrax"
                   data-symbol="MA2"
                   data-name="Maximinus Thrax"
                   data-dates="235 – 238"
-                  data-dynasty="Crisis of the Third Century"
-                  data-note="Soldier-emperor of humble origins; his rise symbolizes the dominance of the army and the weakening of senatorial influence.">
+                  data-dynasty="Crisis of the Third Century">
             <div class="cell-tag">CRIS</div>
             <div class="cell-symbol">MA2</div>
             <div class="cell-name">Maximinus Thrax</div>
@@ -667,88 +710,88 @@
           </button>
 
           <button class="emperor-cell"
+                  data-id="gordian_iii"
                   data-symbol="GO"
                   data-name="Gordian III"
                   data-dates="238 – 244"
-                  data-dynasty="Crisis of the Third Century"
-                  data-note="Came to the throne as a teenager; his reign was dominated by advisers and military campaigns in the East.">
+                  data-dynasty="Crisis of the Third Century">
             <div class="cell-symbol">GO</div>
             <div class="cell-name">Gordian III</div>
             <div class="cell-dates">238–244</div>
           </button>
 
           <button class="emperor-cell"
+                  data-id="philip_the_arab"
                   data-symbol="PH"
                   data-name="Philip the Arab"
                   data-dates="244 – 249"
-                  data-dynasty="Crisis of the Third Century"
-                  data-note="Possibly presided over Rome’s 1000th anniversary; faced rebellions and external threats that eroded his position.">
+                  data-dynasty="Crisis of the Third Century">
             <div class="cell-symbol">PH</div>
             <div class="cell-name">Philip the Arab</div>
             <div class="cell-dates">244–249</div>
           </button>
 
           <button class="emperor-cell"
+                  data-id="decius"
                   data-symbol="DE"
                   data-name="Decius"
                   data-dates="249 – 251"
-                  data-dynasty="Crisis of the Third Century"
-                  data-note="Known for empire-wide persecution of Christians and for dying in battle against the Goths.">
+                  data-dynasty="Crisis of the Third Century">
             <div class="cell-symbol">DE</div>
             <div class="cell-name">Decius</div>
             <div class="cell-dates">249–251</div>
           </button>
 
           <button class="emperor-cell"
+                  data-id="valerian"
                   data-symbol="VA"
                   data-name="Valerian"
                   data-dates="253 – 260"
-                  data-dynasty="Crisis of the Third Century"
-                  data-note="Captured alive by the Persian king Shapur I, a humiliating blow that symbolized imperial vulnerability.">
+                  data-dynasty="Crisis of the Third Century">
             <div class="cell-symbol">VA</div>
             <div class="cell-name">Valerian</div>
             <div class="cell-dates">253–260</div>
           </button>
 
           <button class="emperor-cell"
+                  data-id="gallienus"
                   data-symbol="GA2"
                   data-name="Gallienus"
                   data-dates="253 – 268"
-                  data-dynasty="Crisis of the Third Century"
-                  data-note="Co-ruled with his father Valerian and then alone; fought multiple usurpers while trying to reform the army.">
+                  data-dynasty="Crisis of the Third Century">
             <div class="cell-symbol">GA2</div>
             <div class="cell-name">Gallienus</div>
             <div class="cell-dates">253–268</div>
           </button>
 
           <button class="emperor-cell"
+                  data-id="claudius_gothicus"
                   data-symbol="CL2"
                   data-name="Claudius Gothicus"
                   data-dates="268 – 270"
-                  data-dynasty="Crisis of the Third Century"
-                  data-note="Won a major victory over the Goths at Naissus, helping to restore confidence in the imperial army.">
+                  data-dynasty="Crisis of the Third Century">
             <div class="cell-symbol">CL2</div>
             <div class="cell-name">Claudius Gothicus</div>
             <div class="cell-dates">268–270</div>
           </button>
 
           <button class="emperor-cell"
+                  data-id="aurelian"
                   data-symbol="AU2"
                   data-name="Aurelian"
                   data-dates="270 – 275"
-                  data-dynasty="Crisis of the Third Century"
-                  data-note="‘Restitutor Orbis’ (Restorer of the World). Reunited the fractured empire and built the Aurelian Walls around Rome.">
+                  data-dynasty="Crisis of the Third Century">
             <div class="cell-symbol">AU2</div>
             <div class="cell-name">Aurelian</div>
             <div class="cell-dates">270–275</div>
           </button>
 
           <button class="emperor-cell"
+                  data-id="probus"
                   data-symbol="PR"
                   data-name="Probus"
                   data-dates="276 – 282"
-                  data-dynasty="Crisis of the Third Century"
-                  data-note="Skilled general who secured frontiers and promoted agricultural restoration; killed in a mutiny.">
+                  data-dynasty="Crisis of the Third Century">
             <div class="cell-symbol">PR</div>
             <div class="cell-name">Probus</div>
             <div class="cell-dates">276–282</div>
@@ -758,11 +801,11 @@
           <div class="dyn-label">Tetrarchy & Constantinian Dynasty (284 CE – 363 CE)</div>
 
           <button class="emperor-cell"
+                  data-id="diocletian"
                   data-symbol="DI"
                   data-name="Diocletian"
                   data-dates="284 – 305"
-                  data-dynasty="Tetrarchy & Constantine"
-                  data-note="Reorganized the empire into the Tetrarchy, separating civil and military authority and attempting to stabilize succession and administration.">
+                  data-dynasty="Tetrarchy & Constantine">
             <div class="cell-tag">TETR</div>
             <div class="cell-symbol">DI</div>
             <div class="cell-name">Diocletian</div>
@@ -770,44 +813,44 @@
           </button>
 
           <button class="emperor-cell"
+                  data-id="maximian"
                   data-symbol="MA3"
                   data-name="Maximian"
                   data-dates="286 – 305"
-                  data-dynasty="Tetrarchy & Constantine"
-                  data-note="Co-emperor with Diocletian in the West; shared military burdens and governance during the early Tetrarchy.">
+                  data-dynasty="Tetrarchy & Constantine">
             <div class="cell-symbol">MA3</div>
             <div class="cell-name">Maximian</div>
             <div class="cell-dates">286–305</div>
           </button>
 
           <button class="emperor-cell"
+                  data-id="constantine"
                   data-symbol="CO"
                   data-name="Constantine the Great"
                   data-dates="306 – 337"
-                  data-dynasty="Tetrarchy & Constantine"
-                  data-note="Legalized Christianity (Edict of Milan), refounded Byzantium as Constantinople, and reshaped the imperial religious landscape.">
+                  data-dynasty="Tetrarchy & Constantine">
             <div class="cell-symbol">CO</div>
             <div class="cell-name">Constantine the Great</div>
             <div class="cell-dates">306–337</div>
           </button>
 
           <button class="emperor-cell"
+                  data-id="constantius_ii"
                   data-symbol="CO2"
                   data-name="Constantius II"
                   data-dates="337 – 361"
-                  data-dynasty="Tetrarchy & Constantine"
-                  data-note="Son of Constantine; ruled much of the empire while contending with religious controversies and frontier pressures.">
+                  data-dynasty="Tetrarchy & Constantine">
             <div class="cell-symbol">CO2</div>
             <div class="cell-name">Constantius II</div>
             <div class="cell-dates">337–361</div>
           </button>
 
           <button class="emperor-cell"
+                  data-id="julian"
                   data-symbol="JU"
-                  data-name="Julian the Apostate"
+                  data-name="Julian"
                   data-dates="361 – 363"
-                  data-dynasty="Tetrarchy & Constantine"
-                  data-note="Tried to restore traditional pagan worship while promoting philosophy and administrative reform; died on campaign in Persia.">
+                  data-dynasty="Tetrarchy & Constantine">
             <div class="cell-symbol">JU</div>
             <div class="cell-name">Julian</div>
             <div class="cell-dates">361–363</div>
@@ -817,11 +860,11 @@
           <div class="dyn-label">Valentinian, Theodosian & Late Western Emperors (364 CE – 476 CE)</div>
 
           <button class="emperor-cell"
+                  data-id="valentinian_i"
                   data-symbol="VA2"
                   data-name="Valentinian I"
                   data-dates="364 – 375"
-                  data-dynasty="Late Western Empire"
-                  data-note="Energetic military ruler who defended the Rhine and Danube frontiers and shared rule with his brother Valens in the East.">
+                  data-dynasty="Late Western Empire">
             <div class="cell-tag">LATE</div>
             <div class="cell-symbol">VA2</div>
             <div class="cell-name">Valentinian I</div>
@@ -829,55 +872,55 @@
           </button>
 
           <button class="emperor-cell"
+                  data-id="valens"
                   data-symbol="VA3"
                   data-name="Valens"
                   data-dates="364 – 378"
-                  data-dynasty="Late Western Empire"
-                  data-note="Eastern emperor who died at the Battle of Adrianople against the Goths, a major military disaster.">
+                  data-dynasty="Late Western Empire">
             <div class="cell-symbol">VA3</div>
             <div class="cell-name">Valens</div>
             <div class="cell-dates">364–378</div>
           </button>
 
           <button class="emperor-cell"
+                  data-id="theodosius_i"
                   data-symbol="TH"
                   data-name="Theodosius I"
                   data-dates="379 – 395"
-                  data-dynasty="Late Western Empire"
-                  data-note="Made Nicene Christianity the official state religion and was the last emperor to rule both East and West jointly.">
+                  data-dynasty="Late Western Empire">
             <div class="cell-symbol">TH</div>
             <div class="cell-name">Theodosius I</div>
             <div class="cell-dates">379–395</div>
           </button>
 
           <button class="emperor-cell"
+                  data-id="honorius"
                   data-symbol="HO"
                   data-name="Honorius"
                   data-dates="395 – 423"
-                  data-dynasty="Late Western Empire"
-                  data-note="Western emperor during the sack of Rome in 410; his reign saw accelerating fragmentation of imperial authority in the West.">
+                  data-dynasty="Late Western Empire">
             <div class="cell-symbol">HO</div>
             <div class="cell-name">Honorius</div>
             <div class="cell-dates">395–423</div>
           </button>
 
           <button class="emperor-cell"
+                  data-id="majorian"
                   data-symbol="MA4"
                   data-name="Majorian"
                   data-dates="457 – 461"
-                  data-dynasty="Late Western Empire"
-                  data-note="Capable reformer and general who tried to rebuild Western power but was deposed by the powerful general Ricimer.">
+                  data-dynasty="Late Western Empire">
             <div class="cell-symbol">MA4</div>
             <div class="cell-name">Majorian</div>
             <div class="cell-dates">457–461</div>
           </button>
 
           <button class="emperor-cell"
+                  data-id="romulus_augustulus"
                   data-symbol="RO"
                   data-name="Romulus Augustulus"
                   data-dates="475 – 476"
-                  data-dynasty="Late Western Empire"
-                  data-note="Deposed by the Germanic leader Odoacer in 476; traditionally regarded as the last Western Roman emperor.">
+                  data-dynasty="Late Western Empire">
             <div class="cell-symbol">RO</div>
             <div class="cell-name">Romulus Augustulus</div>
             <div class="cell-dates">475–476</div>
@@ -895,12 +938,13 @@
             Select an emperor from the grid on the left to view:
           </p>
           <ul>
-            <li>Full name and dates of reign</li>
-            <li>Dynasty / historical period</li>
-            <li>A concise contextual note</li>
+            <li>Biography Summary</li>
+            <li>Personality traits</li>
+            <li>Major accomplishments (social, political, military, administrative)</li>
+            <li>Overall historical legacy</li>
           </ul>
           <p>
-            <span>Classroom idea:</span> ask students to compare notes across dynasties (e.g., Julio-Claudian vs. Five Good Emperors) or identify patterns in crises and reforms.
+            <span>Classroom idea:</span> Ask students to compare two emperors from different dynasties and argue which one did more to strengthen or weaken Rome.
           </p>
         </div>
       </div>
@@ -908,15 +952,14 @@
   </section>
 
   <footer class="footer-note">
-    This is a simplified overview, focused on selected emperors for clarity. You can extend the grid by copying a cell and adjusting its data- attributes.
+    This is a simplified overview focused on selected emperors. To adapt it, you can edit the JavaScript emperorData object at the bottom of the file.
   </footer>
 </div>
 
 <script>
   (function () {
-    const grid = document.getElementById("emperor-grid");
-    const detailInner = document.getElementById("detail-inner");
-    const emptyState = document.getElementById("detail-empty");
+    const DEFAULT_IMAGE =
+      "https://via.placeholder.com/800x450.png?text=Roman+Emperor"; // replace with specific bust URLs later if you wish
 
     const dynastyColors = {
       "Julio-Claudian": "dyn-julio",
@@ -929,38 +972,590 @@
       "Other": "dyn-other"
     };
 
+    // Short, classroom-friendly descriptions for each emperor.
+    const emperorData = {
+      augustus: {
+        name: "Augustus",
+        dates: "27 BCE – 14 CE",
+        dynasty: "Julio-Claudian",
+        image: DEFAULT_IMAGE,
+        bio: "Born Octavian, adopted son of Julius Caesar. After defeating Antony and Cleopatra he reorganized the Roman state and became the first emperor, ruling for over forty years.",
+        personality: "Calm, patient, and calculating. Preferred indirect control and careful image-building to open displays of power.",
+        social: "Promoted traditional family values, sponsored temples and monuments, and reshaped Rome’s urban landscape.",
+        political: "Created the Principate, balancing republican forms with monarchical power and ending a century of civil wars.",
+        military: "Secured frontiers in Spain, Gaul, and the East; kept a professional standing army loyal to the emperor.",
+        administrative: "Reformed taxation, created permanent imperial offices, and organized provinces more systematically.",
+        legacy: "Seen as one of history’s great state-builders; his reign begins the Pax Romana and defines what it means to be Roman emperor."
+      },
+      tiberius: {
+        name: "Tiberius",
+        dates: "14 – 37",
+        dynasty: "Julio-Claudian",
+        image: DEFAULT_IMAGE,
+        bio: "Stepson of Augustus and an experienced general. Inherited a stable empire but grew increasingly withdrawn and suspicious.",
+        personality: "Introverted, severe, and mistrustful. Uncomfortable with public praise and often delegating authority to others.",
+        social: "Kept public spending modest and did not pursue large popularity projects or spectacles.",
+        political: "Strengthened the role of the Praetorian Guard and expanded imperial control over provinces.",
+        military: "Completed campaigns in Germania and the Balkans and maintained generally secure borders.",
+        administrative: "Careful with finances and left a large surplus, but his reliance on informers caused fear among elites.",
+        legacy: "A capable but unpopular ruler, remembered more for repression and isolation than for his administrative skill."
+      },
+      caligula: {
+        name: "Caligula",
+        dates: "37 – 41",
+        dynasty: "Julio-Claudian",
+        image: DEFAULT_IMAGE,
+        bio: "Great-grandson of Augustus who began his reign with great enthusiasm but soon acted in erratic and cruel ways.",
+        personality: "Theatrical, impulsive, and vain. Enjoyed shocking the elite and blurring lines between emperor and god.",
+        social: "Expanded games and public shows, spending heavily on spectacle and palace luxuries.",
+        political: "Humiliated senators, pushed the imperial cult, and treated the state as his personal possession.",
+        military: "Led short campaigns along the Rhine and staged a mock invasion of Britain; real strategic gains were minimal.",
+        administrative: "Undid some of Tiberius’s savings and created serious financial strain through extravagant projects.",
+        legacy: "Became a symbol of tyranny and madness; his assassination revealed how fragile imperial authority could be."
+      },
+      claudius: {
+        name: "Claudius",
+        dates: "41 – 54",
+        dynasty: "Julio-Claudian",
+        image: DEFAULT_IMAGE,
+        bio: "Uncle of Caligula, long considered weak because of disabilities. Surprise choice of the Praetorian Guard, yet he proved an energetic and thoughtful ruler.",
+        personality: "Bookish, cautious, and curious. Relied on advisers but took a real interest in law and administration.",
+        social: "Sponsored aqueducts, harbors, and public buildings; extended citizenship to many provincials.",
+        political: "Increased the role of imperial freedmen and strengthened the emperor’s influence over the Senate.",
+        military: "Oversaw the conquest of Britain and campaigns in the East that expanded Roman influence.",
+        administrative: "Actively heard legal cases, issued many edicts, and improved grain supply and provincial governance.",
+        legacy: "Once mocked by ancient writers, now seen as an effective administrator who expanded and stabilized the empire."
+      },
+      nero: {
+        name: "Nero",
+        dates: "54 – 68",
+        dynasty: "Julio-Claudian",
+        image: DEFAULT_IMAGE,
+        bio: "Last Julio-Claudian emperor. Began his reign under guidance from Seneca and Burrus but later ruled more directly and erratically.",
+        personality: "Artistic, attention-seeking, and insecure. Loved music and theater more than statecraft.",
+        social: "Patronized the arts and built lavish palaces such as the Domus Aurea after the Great Fire of Rome.",
+        political: "Alienated the Senate and many aristocrats, relying instead on freedmen and court favorites.",
+        military: "Faced revolts in Britain and Judea and growing unrest among legions on the frontiers.",
+        administrative: "Introduced new building regulations after the fire but financed projects with heavy taxation and confiscations.",
+        legacy: "Remembered in tradition as a cruel and self-indulgent tyrant whose fall led directly to a year of civil war."
+      },
+      galba: {
+        name: "Galba",
+        dates: "68 – 69",
+        dynasty: "Other",
+        image: DEFAULT_IMAGE,
+        bio: "An elderly senator and former governor of Hispania who took power after Nero’s suicide.",
+        personality: "Strict, frugal, and old-fashioned. Admired discipline but lacked flexibility and political tact.",
+        social: "Cut back on imperial luxuries and tried to present himself as a restorer of traditional virtue.",
+        political: "Dismissed many of Nero’s supporters and refused promised bonuses to the Praetorian Guard.",
+        military: "Relied on Spanish and German legions but failed to keep the army’s loyalty.",
+        administrative: "Attempted to clean up finances quickly, causing resentment among both soldiers and elites.",
+        legacy: "Seen as honest but politically clumsy; his brief rule shows how dangerous it was to ignore the expectations of the army."
+      },
+      otho: {
+        name: "Otho",
+        dates: "69",
+        dynasty: "Other",
+        image: DEFAULT_IMAGE,
+        bio: "Former ally of Nero who organized Galba’s assassination and briefly ruled during the Year of the Four Emperors.",
+        personality: "Ambitious and socially polished but capable of self-sacrifice.",
+        social: "Tried to reverse Galba’s harsh measures and restore favor with soldiers and urban crowds.",
+        political: "Presented himself as a moderate compromise figure between competing factions.",
+        military: "Fought Vitellius’s forces in northern Italy and lost at the Battle of Bedriacum.",
+        administrative: "Too short a reign for major reforms; focused on securing legitimacy.",
+        legacy: "Remembered for committing suicide to prevent more civil war, which impressed even his critics."
+      },
+      vitellius: {
+        name: "Vitellius",
+        dates: "69",
+        dynasty: "Other",
+        image: DEFAULT_IMAGE,
+        bio: "Proclaimed emperor by German legions and controlled Rome for several chaotic months.",
+        personality: "Fond of luxury and feasting, kindly to friends but weak in decision-making.",
+        social: "Expanded banquets and public entertainments but did little to solve deeper problems.",
+        political: "Depended on his German troops and struggled to win over Italy and the East.",
+        military: "Defeated Otho’s forces but could not resist Vespasian’s supporters advancing from the Danube.",
+        administrative: "Paid little sustained attention to reform or long-term administration.",
+        legacy: "Overshadowed by the rise of Vespasian; often used as an example of indulgence and political fragility."
+      },
+      vespasian: {
+        name: "Vespasian",
+        dates: "69 – 79",
+        dynasty: "Flavian",
+        image: DEFAULT_IMAGE,
+        bio: "A veteran general who emerged victorious from the civil wars of 69 and founded the Flavian dynasty.",
+        personality: "Practical, humorous, and down-to-earth. Known for dry wit and dislike of pretension.",
+        social: "Began building the Colosseum and restored many structures damaged under Nero.",
+        political: "Repaired relations with the Senate while firmly establishing imperial authority.",
+        military: "Completed the Jewish War through his son Titus and stabilized the frontiers.",
+        administrative: "Reorganized taxes, increased state revenues, and restored financial stability.",
+        legacy: "Viewed as a restorer of order and a model of modest, effective imperial leadership."
+      },
+      titus: {
+        name: "Titus",
+        dates: "79 – 81",
+        dynasty: "Flavian",
+        image: DEFAULT_IMAGE,
+        bio: "Son of Vespasian, already famous as a general before becoming emperor.",
+        personality: "Charismatic and generous, earning the nickname “delight of the human race.”",
+        social: "Provided aid after the eruption of Vesuvius and a major fire in Rome; completed and opened the Colosseum.",
+        political: "Continued his father’s policies and kept good relations with both Senate and army.",
+        military: "His major military fame came earlier from the siege of Jerusalem.",
+        administrative: "Focused on disaster response and public relief during a short reign.",
+        legacy: "Remembered very positively as a kind and responsive ruler whose time in power was cut short."
+      },
+      domitian: {
+        name: "Domitian",
+        dates: "81 – 96",
+        dynasty: "Flavian",
+        image: DEFAULT_IMAGE,
+        bio: "Younger son of Vespasian who ruled after Titus and consolidated Flavian power.",
+        personality: "Authoritarian, suspicious, and detail-oriented; a capable manager but feared by many elites.",
+        social: "Invested in building projects and promoted traditional Roman religion.",
+        political: "Centralized power in the emperor and reduced the Senate’s practical influence.",
+        military: "Conducted campaigns along the Rhine and Danube and fortified frontiers.",
+        administrative: "Reformed coinage, regulated provincial finances, and professionalized parts of the bureaucracy.",
+        legacy: "Assassinated in a palace plot; later writers emphasized his tyranny, but modern assessments note his administrative achievements."
+      },
+      nerva: {
+        name: "Nerva",
+        dates: "96 – 98",
+        dynasty: "Five Good Emperors",
+        image: DEFAULT_IMAGE,
+        bio: "An elderly senator chosen after Domitian’s assassination to calm tensions.",
+        personality: "Moderate, cautious, and conciliatory, aiming to heal divisions.",
+        social: "Provided some relief to the poor and eased certain treason laws.",
+        political: "Adopted Trajan as heir, starting the tradition of choosing capable successors.",
+        military: "Faced a brief crisis with the Praetorian Guard, resolved by elevating Trajan.",
+        administrative: "Made limited but symbolic reforms in a short reign.",
+        legacy: "Important as a transitional figure who opened the era of the so-called Five Good Emperors."
+      },
+      trajan: {
+        name: "Trajan",
+        dates: "98 – 117",
+        dynasty: "Five Good Emperors",
+        image: DEFAULT_IMAGE,
+        bio: "A popular soldier-emperor from Spain who expanded Rome to its greatest territorial size.",
+        personality: "Energetic, approachable, and respected by both soldiers and senators.",
+        social: "Built Trajan’s Forum, Markets, and Column; supported poor children through the alimenta program.",
+        political: "Maintained good relations with the Senate while firmly leading imperial policy.",
+        military: "Conquered Dacia, campaigned deep into the Near East, and achieved major victories.",
+        administrative: "Improved provincial governance and infrastructure across the empire.",
+        legacy: "Later emperors were praised as being “better than Trajan”; he stands as one of Rome’s greatest rulers."
+      },
+      hadrian: {
+        name: "Hadrian",
+        dates: "117 – 138",
+        dynasty: "Five Good Emperors",
+        image: DEFAULT_IMAGE,
+        bio: "Trajan’s relative and heir who shifted from expansion to consolidation and traveled widely through the provinces.",
+        personality: "Intellectual, artistic, and curious, but also sometimes aloof and controlling.",
+        social: "Patronized architecture, literature, and Greek culture; redesigned parts of Rome and built a grand villa at Tivoli.",
+        political: "Visited many provinces in person, reinforcing ties between center and periphery.",
+        military: "Abandoned some of Trajan’s eastern conquests and fortified borders, including Hadrian’s Wall in Britain.",
+        administrative: "Promoted legal standardization and professional governance.",
+        legacy: "Known as a cultured emperor who stabilized the empire and left a strong architectural imprint."
+      },
+      antoninus_pius: {
+        name: "Antoninus Pius",
+        dates: "138 – 161",
+        dynasty: "Five Good Emperors",
+        image: DEFAULT_IMAGE,
+        bio: "Adopted by Hadrian and presided over one of the most peaceful and prosperous periods in Roman history.",
+        personality: "Mild, steady, and dutiful; praised for his piety and fairness.",
+        social: "Supported charities and legal protections for the vulnerable, including slaves.",
+        political: "Maintained good relations with the Senate and avoided major purges or conflicts.",
+        military: "Faced relatively few large wars; some expansion and fortification in Britain and along other frontiers.",
+        administrative: "Managed finances prudently and respected legal procedure.",
+        legacy: "Remembered as a model of quiet, just rule during a long golden age."
+      },
+      marcus_aurelius: {
+        name: "Marcus Aurelius",
+        dates: "161 – 180",
+        dynasty: "Five Good Emperors",
+        image: DEFAULT_IMAGE,
+        bio: "Philosopher-emperor and author of the Meditations, ruling during a time of war and plague.",
+        personality: "Thoughtful, self-disciplined, and inward-looking; deeply committed to Stoic ethics.",
+        social: "Supported education and philosophy and tried to model moral leadership.",
+        political: "Co-ruled with Lucius Verus and later his son Commodus, balancing family and state demands.",
+        military: "Led campaigns along the Danube in the Marcomannic Wars to defend the northern frontier.",
+        administrative: "Dealt with the Antonine Plague and its economic disruptions while trying to preserve stability.",
+        legacy: "Often idealized as the philosopher-king; his death marks the end of the high imperial golden age."
+      },
+      septimius_severus: {
+        name: "Septimius Severus",
+        dates: "193 – 211",
+        dynasty: "Severan",
+        image: DEFAULT_IMAGE,
+        bio: "North African-born general who seized power after a year of civil war and founded the Severan dynasty.",
+        personality: "Hard-driving, ambitious, and strongly attached to the army.",
+        social: "Favored soldiers and his home city, promoting his family’s image across the empire.",
+        political: "Increased the army’s influence in politics and reduced the Senate’s practical power.",
+        military: "Strengthened frontiers in the East and Britain and campaigned vigorously.",
+        administrative: "Raised soldiers’ pay, which improved loyalty but strained finances.",
+        legacy: "Left a more militarized and expensive empire that later emperors struggled to control."
+      },
+      caracalla: {
+        name: "Caracalla",
+        dates: "198 – 217",
+        dynasty: "Severan",
+        image: DEFAULT_IMAGE,
+        bio: "Son of Septimius Severus, known for brutality and the empire-wide grant of citizenship.",
+        personality: "Suspicious, quick-tempered, and often ruthless toward rivals, including his own brother.",
+        social: "Built the grand Baths of Caracalla and promoted his own image heavily.",
+        political: "Issued the Constitutio Antoniniana, extending Roman citizenship to most free inhabitants.",
+        military: "Preferred life with the legions and led campaigns along the Rhine and in the East.",
+        administrative: "His policies increased tax revenue but also military expenses.",
+        legacy: "Remembered as a violent ruler whose citizenship edict had long-term legal significance."
+      },
+      elagabalus: {
+        name: "Elagabalus",
+        dates: "218 – 222",
+        dynasty: "Severan",
+        image: DEFAULT_IMAGE,
+        bio: "Teenaged emperor from Syria who brought his local sun cult to Rome.",
+        personality: "Eccentric, extravagant, and provocative in both politics and religion.",
+        social: "Introduced new religious ceremonies and shocked Roman elites with unconventional behavior.",
+        political: "Relied heavily on his grandmother and other relatives for guidance.",
+        military: "Paid less attention to frontier defense, which angered soldiers.",
+        administrative: "Inconsistent and easily influenced, with little coherent reform.",
+        legacy: "Ancient authors portray him as a symbol of excess; killed by the Praetorian Guard."
+      },
+      severus_alexander: {
+        name: "Severus Alexander",
+        dates: "222 – 235",
+        dynasty: "Severan",
+        image: DEFAULT_IMAGE,
+        bio: "Young cousin of Elagabalus, presented as a more respectable and moderate ruler.",
+        personality: "Gentle, studious, and dependent on advisers, especially his mother.",
+        social: "Promoted education and tried to embody traditional Roman virtues.",
+        political: "Worked more cooperatively with the Senate than his predecessors.",
+        military: "Faced threats on the Rhine and in the East; his cautious strategy disappointed some soldiers.",
+        administrative: "Attempted financial and legal reforms but lacked strong authority.",
+        legacy: "His assassination by troops marks the start of the full-blown third-century crisis."
+      },
+      maximinus_thrax: {
+        name: "Maximinus Thrax",
+        dates: "235 – 238",
+        dynasty: "Crisis of the Third Century",
+        image: DEFAULT_IMAGE,
+        bio: "A gigantic Thracian soldier who rose from the ranks to become emperor after Severus Alexander.",
+        personality: "Physically imposing, harsh, and deeply mistrustful of the aristocracy.",
+        social: "Rarely visited Rome and ruled largely from military camps.",
+        political: "Relied almost entirely on military support and persecuted many elites.",
+        military: "Constant campaigning along the frontiers, especially against Germanic tribes.",
+        administrative: "Heavy taxation to pay troops fueled rebellion in the provinces.",
+        legacy: "Often seen as the first of the soldier-emperors whose reigns made the crisis so turbulent."
+      },
+      gordian_iii: {
+        name: "Gordian III",
+        dates: "238 – 244",
+        dynasty: "Crisis of the Third Century",
+        image: DEFAULT_IMAGE,
+        bio: "Became emperor as a teenager after a series of rapid successions in 238.",
+        personality: "Personally mild and inexperienced, overshadowed by advisers and generals.",
+        social: "Popular with the people of Rome, who preferred a young, legitimate ruler.",
+        political: "Real power lay with his counselors and the Praetorian Prefect.",
+        military: "Led a major campaign against the Persian Sasanian Empire but died on campaign under unclear circumstances.",
+        administrative: "Too young to leave a strong personal mark on administration.",
+        legacy: "Viewed as a tragic figure whose reign briefly promised stability in a chaotic era."
+      },
+      philip_the_arab: {
+        name: "Philip the Arab",
+        dates: "244 – 249",
+        dynasty: "Crisis of the Third Century",
+        image: DEFAULT_IMAGE,
+        bio: "From a family in the Roman East, he came to power after Gordian III’s death.",
+        personality: "Diplomatic and pragmatic, trying to balance different regional interests.",
+        social: "Celebrated Rome’s 1000th anniversary with games and public events.",
+        political: "Sought accommodation with both Senate and army but faced several revolts.",
+        military: "Made peace with Persia early in his reign but lost support after defeats and rebellions.",
+        administrative: "Attempted to stabilize finances and governance but lacked time and secure backing.",
+        legacy: "Represents a brief lull in the crisis before renewed civil war."
+      },
+      decius: {
+        name: "Decius",
+        dates: "249 – 251",
+        dynasty: "Crisis of the Third Century",
+        image: DEFAULT_IMAGE,
+        bio: "An experienced senator and general who took power during ongoing instability.",
+        personality: "Traditional, stern, and committed to restoring older Roman religious practices.",
+        social: "Issued an empire-wide edict requiring public sacrifice, leading to persecution of Christians.",
+        political: "Tried to revive the authority of traditional offices and the Senate.",
+        military: "Died in battle against the Goths at Abritus, the first emperor killed in combat with foreign enemies.",
+        administrative: "Focused more on moral and religious renewal than on structural reforms.",
+        legacy: "Remembered for his harsh policy toward Christians and his death in battle."
+      },
+      valerian: {
+        name: "Valerian",
+        dates: "253 – 260",
+        dynasty: "Crisis of the Third Century",
+        image: DEFAULT_IMAGE,
+        bio: "Shared power with his son Gallienus in an attempt to manage multiple crises.",
+        personality: "Respected elder statesman, but unlucky in war.",
+        social: "Continued pressures on Christian communities in some areas.",
+        political: "Divided responsibilities with Gallienus to better cover frontiers.",
+        military: "Captured alive by the Persian king Shapur I, a shocking humiliation for Rome.",
+        administrative: "His capture threw administration into confusion and encouraged breakaway regimes.",
+        legacy: "His fate symbolized the empire’s vulnerability during the mid-third-century crisis."
+      },
+      gallienus: {
+        name: "Gallienus",
+        dates: "253 – 268",
+        dynasty: "Crisis of the Third Century",
+        image: DEFAULT_IMAGE,
+        bio: "Son of Valerian who ruled alone after his father’s capture and faced numerous usurpers.",
+        personality: "Cultured and inventive but often criticized as too relaxed for the crisis he faced.",
+        social: "Patronized philosophy and the arts even amid turmoil.",
+        political: "Had to tolerate semi-independent rulers in the Gallic and Palmyrene empires.",
+        military: "Reorganized the cavalry and created more mobile field armies.",
+        administrative: "Began excluding senators from high military commands to professionalize leadership.",
+        legacy: "Now seen as an important reformer whose efforts helped later emperors restore the empire."
+      },
+      claudius_gothicus: {
+        name: "Claudius Gothicus",
+        dates: "268 – 270",
+        dynasty: "Crisis of the Third Century",
+        image: DEFAULT_IMAGE,
+        bio: "A successful general chosen by the army after Gallienus’s death.",
+        personality: "Energetic and militarily focused, with a reputation for personal bravery.",
+        social: "Gained popularity by winning major victories rather than through spectacle.",
+        political: "Helped restore confidence in central imperial authority.",
+        military: "Defeated the Goths decisively at the Battle of Naissus.",
+        administrative: "Too short a reign for deep structural reforms, but he set a positive example.",
+        legacy: "Remembered as a crucial figure in the military recovery of the empire."
+      },
+      aurelian: {
+        name: "Aurelian",
+        dates: "270 – 275",
+        dynasty: "Crisis of the Third Century",
+        image: DEFAULT_IMAGE,
+        bio: "A tough Illyrian general who reunited the fractured empire.",
+        personality: "Decisive, strict, and highly disciplined; nicknamed “Restorer of the World.”",
+        social: "Sponsored sun worship and provided regulated bread rations to the urban poor.",
+        political: "Destroyed the breakaway Gallic Empire and reconquered Palmyra.",
+        military: "Won multiple campaigns on several frontiers and strengthened defenses.",
+        administrative: "Built the Aurelian Walls around Rome and reorganized coinage.",
+        legacy: "Key architect of Rome’s survival after the third-century crisis."
+      },
+      probus: {
+        name: "Probus",
+        dates: "276 – 282",
+        dynasty: "Crisis of the Third Century",
+        image: DEFAULT_IMAGE,
+        bio: "Another Illyrian soldier-emperor who continued restoration after Aurelian.",
+        personality: "Industrious and demanding, expecting soldiers to work on civic projects in peacetime.",
+        social: "Resettled veterans and encouraged viticulture and agriculture in some provinces.",
+        political: "Worked to strengthen central control while rewarding loyal officers.",
+        military: "Defeated various groups along the Rhine and Danube and suppressed internal revolts.",
+        administrative: "Promoted rebuilding and land development but faced resentment from overworked troops.",
+        legacy: "Seen as an able restorer whose murder by soldiers ended a promising reign."
+      },
+      diocletian: {
+        name: "Diocletian",
+        dates: "284 – 305",
+        dynasty: "Tetrarchy & Constantine",
+        image: DEFAULT_IMAGE,
+        bio: "A low-born officer from the Balkans who completely reorganized the empire and created the Tetrarchy.",
+        personality: "Systematic, authoritarian, and reform-minded, with a strong sense of order.",
+        social: "Launched the last major persecution of Christians and supported traditional cults.",
+        political: "Divided power among two Augusti and two Caesars to manage the huge empire.",
+        military: "Strengthened frontiers and reorganized the army into frontier and mobile forces.",
+        administrative: "Restructured provinces, standardized taxation, and attempted price controls.",
+        legacy: "One of the most important reformers in Roman history; voluntarily abdicated and retired to his palace in Dalmatia."
+      },
+      maximian: {
+        name: "Maximian",
+        dates: "286 – 305",
+        dynasty: "Tetrarchy & Constantine",
+        image: DEFAULT_IMAGE,
+        bio: "Diocletian’s colleague as co-emperor in the West.",
+        personality: "More soldierly and less administrative than Diocletian, but loyal to the system at first.",
+        social: "Defended Italy and Africa, keeping core western provinces secure.",
+        political: "Helped implement Tetrarchic governance but later became involved in struggles over succession.",
+        military: "Fought along the Rhine and in North Africa, suppressing revolts and invasions.",
+        administrative: "Shared in reforms but left fewer personal administrative innovations.",
+        legacy: "Important partner in Diocletian’s reforms, though his later attempts to regain power complicated the transition."
+      },
+      constantine: {
+        name: "Constantine the Great",
+        dates: "306 – 337",
+        dynasty: "Tetrarchy & Constantine",
+        image: DEFAULT_IMAGE,
+        bio: "Son of Constantius Chlorus who defeated rival emperors and reunited the empire under his sole rule.",
+        personality: "Ambitious, charismatic, and politically shrewd; deeply interested in religious questions.",
+        social: "Legalized Christianity (with Licinius) and granted favors to the Church while still tolerating other cults for much of his reign.",
+        political: "Refined imperial ceremony and built a new capital at Constantinople.",
+        military: "Won major civil wars at the Milvian Bridge and Chrysopolis and secured frontiers.",
+        administrative: "Continued Diocletian’s reforms and supported a more Christian imperial identity.",
+        legacy: "Transformational figure who set the empire on a Christian and eastern-oriented path."
+      },
+      constantius_ii: {
+        name: "Constantius II",
+        dates: "337 – 361",
+        dynasty: "Tetrarchy & Constantine",
+        image: DEFAULT_IMAGE,
+        bio: "Son of Constantine who ruled much of the empire after a violent division among heirs.",
+        personality: "Serious, cautious, and often suspicious, involved in religious disputes.",
+        social: "Supported forms of Christianity aligned with his theological views, sometimes persecuting rivals.",
+        political: "Managed complex court politics and kept relative unity in the eastern empire.",
+        military: "Fought Sasanian Persia and defended the Danube frontier.",
+        administrative: "Maintained and adjusted the structures created by Diocletian and Constantine.",
+        legacy: "Less celebrated than his father but important for preserving stability during a difficult generation."
+      },
+      julian: {
+        name: "Julian",
+        dates: "361 – 363",
+        dynasty: "Tetrarchy & Constantine",
+        image: DEFAULT_IMAGE,
+        bio: "Cousin of Constantius II and last non-Christian emperor, sometimes called “the Apostate.”",
+        personality: "Philosophical, energetic, and idealistic; fascinated by Greek culture and traditional religion.",
+        social: "Tried to restore traditional cults and limit Christian privileges without outright persecution.",
+        political: "Reduced court luxury and attempted to involve cities and elites more directly in governance.",
+        military: "Successful commander in Gaul; died on campaign against Persia.",
+        administrative: "Issued reforms to simplify administration and curb corruption.",
+        legacy: "Remembered as a brilliant but short-lived attempt to reverse the Christianization of the empire."
+      },
+      valentinian_i: {
+        name: "Valentinian I",
+        dates: "364 – 375",
+        dynasty: "Late Western Empire",
+        image: DEFAULT_IMAGE,
+        bio: "Pannonian officer chosen emperor after Julian’s successors failed.",
+        personality: "Tough, sometimes hot-tempered, but respected for hard work and fairness.",
+        social: "Protected religious diversity in the West while allowing Christian growth.",
+        political: "Ruled the West while his brother Valens ruled the East, dividing responsibilities.",
+        military: "Strengthened Rhine and Danube defenses and conducted energetic campaigns.",
+        administrative: "Focused on frontier security and fiscal stability.",
+        legacy: "Often seen as the last strong Western emperor before rapid decline."
+      },
+      valens: {
+        name: "Valens",
+        dates: "364 – 378",
+        dynasty: "Late Western Empire",
+        image: DEFAULT_IMAGE,
+        bio: "Brother of Valentinian I who governed the eastern half of the empire.",
+        personality: "Serious and conscientious but sometimes indecisive and poorly advised.",
+        social: "Supported Arian Christianity, which deepened religious divisions.",
+        political: "Struggled with internal revolts and the challenge of Gothic migrants.",
+        military: "Killed at the disastrous Battle of Adrianople against the Goths.",
+        administrative: "Tried to manage refugee settlement but underestimated the danger.",
+        legacy: "His defeat at Adrianople exposed vulnerabilities that shaped later policy toward barbarian groups."
+      },
+      theodosius_i: {
+        name: "Theodosius I",
+        dates: "379 – 395",
+        dynasty: "Late Western Empire",
+        image: DEFAULT_IMAGE,
+        bio: "Spanish general called to rule the East who later briefly reunited the whole empire under his authority.",
+        personality: "Devout Christian, energetic, and politically adept.",
+        social: "Made Nicene Christianity the official religion and restricted public pagan worship.",
+        political: "Settled Gothic groups as federate allies within the empire.",
+        military: "Defeated rival emperors and barbarian forces in several campaigns.",
+        administrative: "Relied heavily on court officials and bishops in governance.",
+        legacy: "Last emperor to rule both East and West; after his death, the division became permanent."
+      },
+      honorius: {
+        name: "Honorius",
+        dates: "395 – 423",
+        dynasty: "Late Western Empire",
+        image: DEFAULT_IMAGE,
+        bio: "Young son of Theodosius I who ruled the Western Empire while relying on generals and court officials.",
+        personality: "Personally timid and not militarily inclined.",
+        social: "Presided over a period of increasing insecurity in the West.",
+        political: "Power was dominated by strong generals such as Stilicho and later court factions.",
+        military: "His reign saw the sack of Rome in 410 and loss of control in several provinces.",
+        administrative: "Western administration fragmented as local powers filled gaps.",
+        legacy: "Often blamed for weakness during a crucial stage of Western decline."
+      },
+      majorian: {
+        name: "Majorian",
+        dates: "457 – 461",
+        dynasty: "Late Western Empire",
+        image: DEFAULT_IMAGE,
+        bio: "Capable general elevated to the Western throne with support from the powerful general Ricimer.",
+        personality: "Energetic, reform-minded, and personally brave.",
+        social: "Tried to restore cities and encourage rebuilding in war-damaged regions.",
+        political: "Attempted to assert independent authority, which alarmed his backer Ricimer.",
+        military: "Planned major operations against the Vandals but suffered naval setbacks.",
+        administrative: "Issued laws aimed at protecting taxpayers and restoring local governance.",
+        legacy: "Remembered as one of the last Western emperors who seriously tried to reverse decline."
+      },
+      romulus_augustulus: {
+        name: "Romulus Augustulus",
+        dates: "475 – 476",
+        dynasty: "Late Western Empire",
+        image: DEFAULT_IMAGE,
+        bio: "Teenaged figurehead emperor installed in Italy by his father, the general Orestes.",
+        personality: "Little is known; likely a pawn in larger power struggles.",
+        social: "Ruled only in parts of Italy, with real power in the hands of military leaders.",
+        political: "Deposed by the Germanic commander Odoacer, who chose not to kill him.",
+        military: "No independent military achievements; the Western army was fragmenting.",
+        administrative: "Too short and limited a reign for distinct policies.",
+        legacy: "Traditionally regarded as the last Western Roman emperor, marking the end of the Western imperial line."
+      }
+    };
+
+    const grid = document.getElementById("emperor-grid");
+    const detailInner = document.getElementById("detail-inner");
+    const emptyState = document.getElementById("detail-empty");
+
     function clearActive() {
       const active = grid.querySelector(".emperor-cell.active");
       if (active) active.classList.remove("active");
     }
 
-    function renderDetail(cell) {
-      const name = cell.dataset.name;
-      const dates = cell.dataset.dates;
-      const dynasty = cell.dataset.dynasty;
-      const note = cell.dataset.note;
+    function renderDetailById(id) {
+      const emp = emperorData[id];
+      if (!emp) return;
 
-      const dynClass = dynastyColors[dynasty] || "dyn-other";
+      const dynClass = dynastyColors[emp.dynasty] || "dyn-other";
+      const imageUrl = emp.image || DEFAULT_IMAGE;
 
       detailInner.innerHTML = `
-        <div class="detail-header">
-          <div>
-            <div class="detail-name">${name}</div>
-            <div class="detail-dates">${dates}</div>
+        <div class="detail-header-top">
+          <div class="detail-image-wrapper">
+            <img src="${imageUrl}" alt="Bust or portrait representing ${emp.name}">
           </div>
-          <div class="detail-dynasty-pill">
-            <span class="detail-dynasty-dot ${dynClass}"></span>
-            <span>${dynasty}</span>
+          <div class="detail-header">
+            <div>
+              <div class="detail-name">${emp.name}</div>
+              <div class="detail-dates">${emp.dates}</div>
+            </div>
+            <div class="detail-dynasty-pill">
+              <span class="detail-dynasty-dot ${dynClass}"></span>
+              <span>${emp.dynasty}</span>
+            </div>
           </div>
         </div>
         <div class="detail-body">
           <div class="detail-notes">
-            ${note}
+            <div class="detail-section">
+              <div class="detail-section-title">Biography Summary</div>
+              <div>${emp.bio}</div>
+            </div>
+            <div class="detail-section">
+              <div class="detail-section-title">Personality</div>
+              <div>${emp.personality}</div>
+            </div>
+            <div class="detail-section">
+              <div class="detail-section-title">Major Accomplishments</div>
+              <ul class="detail-section-list">
+                <li><strong>Social:</strong> ${emp.social}</li>
+                <li><strong>Political:</strong> ${emp.political}</li>
+                <li><strong>Military:</strong> ${emp.military}</li>
+                <li><strong>Administrative:</strong> ${emp.administrative}</li>
+              </ul>
+            </div>
+            <div class="detail-section">
+              <div class="detail-section-title">Overall Historical Legacy</div>
+              <div>${emp.legacy}</div>
+            </div>
           </div>
         </div>
         <div class="detail-meta">
-          <strong>Hint for students:</strong> How does this emperor’s rule reflect broader patterns in Roman history—
-          such as expansion, crisis, or reform? Compare with another emperor from a different dynasty.
+          <strong>Thinking like a historian:</strong> How does ${emp.name}'s reign reflect larger patterns in Roman history—
+          such as expansion, crisis, or reform? Compare this emperor with someone from a different dynasty.
         </div>
       `;
     }
@@ -968,11 +1563,15 @@
     function handleClick(event) {
       const cell = event.target.closest(".emperor-cell");
       if (!cell) return;
+      const id = cell.dataset.id;
+      if (!id) return;
 
       clearActive();
       cell.classList.add("active");
-      emptyState && emptyState.remove();
-      renderDetail(cell);
+      if (emptyState) {
+        emptyState.remove();
+      }
+      renderDetailById(id);
     }
 
     grid.addEventListener("click", handleClick);
@@ -980,6 +1579,3 @@
 </script>
 </body>
 </html>
-
-
-
